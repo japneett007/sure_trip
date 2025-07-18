@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suretrip - Cab Cancellation Predictor</title>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(90deg, #00bfae 0%, #7c3aed 100%);
+            color: #fff;
+            padding: 2rem 0 1.2rem 0;
+            text-align: center;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            box-shadow: 0 4px 24px #7c3aed22;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+        .header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.92;
+        }
+        .container {
+            max-width: 420px;
+            margin: -2.5rem auto 0 auto;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 32px #00bfae22;
+            padding: 2.5rem 2rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        label {
+            font-weight: 600;
+            color: #7c3aed;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        select, input[type="datetime-local"] {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 0.7rem;
+            border: 1.5px solid #e0e7ff;
+            background: #f8fafc;
+            font-size: 1rem;
+            margin-bottom: 0.7rem;
+            transition: border 0.2s;
+        }
+        select:focus, input[type="datetime-local"]:focus {
+            border: 1.5px solid #00bfae;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #ff7e5f 0%, #feb47b 100%);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 12px #ff7e5f33;
+            transition: background 0.2s, transform 0.1s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #feb47b 0%, #ff7e5f 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .result, .error {
+            margin-top: 1.5rem;
+            padding: 1.2rem 1rem;
+            border-radius: 1.2rem;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .result {
+            background: linear-gradient(90deg, #e0ffe7 0%, #e0f7ff 100%);
+            color: #0e766e;
+            border: 1.5px solid #00bfae44;
+            box-shadow: 0 2px 12px #00bfae22;
+        }
+        .error {
+            background: linear-gradient(90deg, #ffe0e0 0%, #fff0e0 100%);
+            color: #b91c1c;
+            border: 1.5px solid #ff7e5f44;
+            box-shadow: 0 2px 12px #ff7e5f22;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1.2rem 0.5rem; }
+            .header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Suretrip</h1>
+        <p>AI-powered Cab Cancellation Predictor</p>
+    </div>
+    <div class="container">
+        <form id="prediction_form">
+            <label for="travel_type_id">Travel Type</label>
+            <select id="travel_type_id" name="travel_type_id" required>
+                <option value="">Select travel type</option>
+                <option value="1">Business Travel</option>
+                <option value="2">Personal Travel</option>
+                <option value="3">Emergency Travel</option>
+            </select>
+
+            <label for="from_area_id">Pickup Area</label>
+            <select id="from_area_id" name="from_area_id" required>
+                <option value="">Select pickup area</option>
+                <option value="1">Downtown</option>
+                <option value="2">Airport</option>
+                <option value="3">Business District</option>
+                <option value="4">Residential Area</option>
+                <option value="5">Shopping Mall</option>
+            </select>
+
+            <label for="to_area_id">Destination Area</label>
+            <select id="to_area_id" name="to_area_id" required>
+                <option value="">Select destination area</option>
+                <option value="1">Downtown</option>
+                <option value="2">Airport</option>
+                <option value="3">Business District</option>
+                <option value="4">Residential Area</option>
+                <option value="5">Shopping Mall</option>
+            </select>
+
+            <label for="from_city_id">Pickup City</label>
+            <select id="from_city_id" name="from_city_id" required>
+                <option value="">Select pickup city</option>
+                <option value="1">New York</option>
+                <option value="2">Los Angeles</option>
+                <option value="3">Chicago</option>
+                <option value="4">Houston</option>
+                <option value="5">Phoenix</option>
+            </select>
+
+            <label for="to_city_id">Destination City</label>
+            <select id="to_city_id" name="to_city_id" required>
+                <option value="">Select destination city</option>
+                <option value="1">New York</option>
+                <option value="2">Los Angeles</option>
+                <option value="3">Chicago</option>
+                <option value="4">Houston</option>
+                <option value="5">Phoenix</option>
+            </select>
+
+            <label for="package_id">Package Type</label>
+            <select id="package_id" name="package_id" required>
+                <option value="">Select package</option>
+                <option value="1">Economy</option>
+                <option value="2">Standard</option>
+                <option value="3">Premium</option>
+                <option value="4">Luxury</option>
+            </select>
+
+            <label for="vehicle_model_id">Vehicle Model</label>
+            <select id="vehicle_model_id" name="vehicle_model_id" required>
+                <option value="">Select vehicle model</option>
+                <option value="1">Sedan</option>
+                <option value="2">SUV</option>
+                <option value="3">Hatchback</option>
+                <option value="4">Luxury Car</option>
+                <option value="5">Van</option>
+            </select>
+
+            <label for="booking_datetime">Booking Date & Time</label>
+            <input type="datetime-local" id="booking_datetime" name="booking_datetime" required />
+
+            <label for="online_booking">Booking Method</label>
+            <select id="online_booking" name="online_booking" required>
+                <option value="">Select booking method</option>
+                <option value="1">Online Booking</option>
+                <option value="0">Phone Booking</option>
+            </select>
+
+            <label for="mobile_site_booking">Platform</label>
+            <select id="mobile_site_booking" name="mobile_site_booking" required>
+                <option value="">Select platform</option>
+                <option value="1">Mobile App</option>
+                <option value="0">Desktop Website</option>
+            </select>
+
+            <button type="submit">Predict with Suretrip</button>
+        </form>
+        <div id="output"></div>
+    </div>
+    <script>
+    document.getElementById('prediction_form').onsubmit = async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const data = Object.fromEntries(new FormData(form).entries());
+        // Prepare features for backend
+        const bookingDate = new Date(data.booking_datetime);
+        data.hour = bookingDate.getHours();
+        data.day_of_week = bookingDate.getDay();
+        data.is_weekend = (data.day_of_week == 0 || data.day_of_week == 6) ? 1 : 0;
+        // Convert all relevant fields to integers
+        const intFields = [
+            'travel_type_id', 'from_area_id', 'to_area_id', 'from_city_id', 'to_city_id',
+            'package_id', 'vehicle_model_id', 'online_booking', 'mobile_site_booking',
+            'hour', 'day_of_week', 'is_weekend'
+        ];
+        intFields.forEach(f => { if (data[f] !== undefined) data[f] = parseInt(data[f], 10); });
+        delete data.booking_datetime;
+        document.getElementById('output').innerHTML = 'Predicting...';
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (!response.ok || result.error) {
+                throw new Error(result.error || 'Prediction failed');
+            }
+            document.getElementById('output').innerHTML = `<div class="result"><b>Suretrip Prediction:</b><br><span style='font-size:2rem;'>${(result.cancellation_probability*100).toFixed(2)}%</span><br><span style='font-size:1rem;color:#7c3aed;'>chance of cancellation</span></div>`;
+        } catch (err) {
+            document.getElementById('output').innerHTML = `<div class="error">${err.message}</div>`;
+        }
+    };
+    </script>
+</body>
+</html> 

@@ -1,0 +1,11 @@
+{
+  "name": "cab-cancellation-predictor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cab cancellation predictor web app with Flask backend and HTML/JS frontend.",
+  "keywords": ["flask", "machine learning", "cab", "predictor", "frontend", "backend"],
+  "scripts": {
+    "start-backend": "python app.py",
+    "serve-frontend": "python -m http.server 8080"
+  }
+}
